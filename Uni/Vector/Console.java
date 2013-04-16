@@ -4,10 +4,10 @@ import java.io.InputStreamReader;
 
 
 
-public class ConsoleReader {
+public class Console {
 
 	private static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-	public static Float Float(String Message) throws Exception{
+	public static Float Float(String Message) throws IOException{
 		System.out.print(Message + ": ");
 		String value = console.readLine();
 		while(!value.matches("[-]?[0-9]+(\\.[0-9]+)?")){

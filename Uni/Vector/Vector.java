@@ -1,6 +1,14 @@
+import java.io.IOException;
+
 
 
 public class Vector{
+	class DimensionException extends Exception{
+		private static final long serialVersionUID = 1L;
+		public DimensionException(){ super(); }
+		public DimensionException(String Message){ super(Message); }
+	}
+	
 	private float[] _values;
 	
 	/**
@@ -16,7 +24,7 @@ public class Vector{
 	 * @param Values
 	 */
 	public Vector(float... Values){
-		Values = _values;
+		_values = Values;
 	}
 	
 	/**
@@ -40,8 +48,8 @@ public class Vector{
 	 */
 	public float getLength(){
 		float sqResult = 0;
-		for(int i = 0; i < _values.length; i++)
-			sqResult += _values[i] * _values[i];
+		for(float f : _values)
+			sqResult += f * f;
 		return (float)Math.sqrt(sqResult);
 	}
 	
@@ -62,10 +70,10 @@ public class Vector{
 	 * @return Vektor von dem die Funktion aufgerufen wurde
 	 * @throws
 	 */
-	public Vector Add(Vector... Vectors) throws Exception{
+	public Vector Add(Vector... Vectors) throws DimensionException{
 		for(Vector v : Vectors)
 			if(v.getDimension() != _values.length)
-				throw new Exception("Die Dimensionen der Vektoren stimmen nicht überein.");
+				throw new DimensionException("Addition - Die Dimensionen der Vektoren stimmen nicht überein.");
 		for(Vector v : Vectors)
 			for(int i = 0; i < _values.length; i++)
 				_values[i] += v.getValue(i) ;
@@ -77,12 +85,11 @@ public class Vector{
 	 * @param v
 	 * @return Vektor von dem die Funktion aufgerufen wurde
 	 */
-	public Vector Diff(Vector v){
+	public Vector Diff(Vector v) throws DimensionException{
 		if(_values.length != this.getDimension())
-			System.out.println("Die Dimensionen der Vektoren stimmen nicht überein.");
-		else
-			for(int i = 0; i < _values.length; i++)
-				_values[i] -= v.getValue(i);
+			throw new DimensionException("Differenz - Die Dimensionen der Vektoren stimmen nicht überein.");
+		for(int i = 0; i < _values.length; i++)
+			_values[i] -= v.getValue(i);
 		return this;
 	}
 	
@@ -121,9 +128,9 @@ public class Vector{
 	 * @param v Vector der zur berechnung genutz werden soll
 	 * @return
 	 */
-	public float DotProduct(Vector v){
+	public float DotProduct(Vector v) throws DimensionException{
 		if(_values.length != this.getDimension())
-			System.out.println("Die Dimensionen der Vektoren stimmen nicht überein.");
+			throw new DimensionException("Skalarprodukt - Die Dimensionen der Vektoren stimmen nicht überein.");
 		float result = 0;
 		for(int i = 0; i < _values.length; i++)
 			result += _values[i] * v.getValue(i);
@@ -135,9 +142,9 @@ public class Vector{
 	 * @param v
 	 * @return Vektor von dem die Funktion aufgerufen wurde
 	 */
-	public Vector CrossProduct(Vector v){
+	public Vector CrossProduct(Vector v) throws DimensionException{
 		if(_values.length != 3 || v.getDimension() != 3)
-			System.out.println("Beide Vektoren müssen im Dreidimensionalen Raum liegen.");
+			throw new DimensionException("Beide Vektoren müssen im Dreidimensionalen Raum liegen.");
 		else
 		{
 			Vector temp = this.Clone();
@@ -170,13 +177,13 @@ public class Vector{
 	 * @param Index Index des festzulegenden Wertes
 	 * @return  Vektor von dem die Funktion aufgerufen wurde
 	 */
-	public Vector getInput(int Index){
-		if(Index >= _values.length)
-			System.out.println("Der Index zur Eingabe ist auserhalb der Dimenson des Vectors.");
+	public Vector getInput(int Index) throws DimensionException{
+		if(Index < 0 || Index >= _values.length)
+			throw new DimensionException("Eingabe - Der Index zur Eingabe ist auserhalb der Dimenson des Vectors.");
 		else{
 			try{
-				_values[Index] = ConsoleReader.Float("Bitte geben Sie die " + (Index + 1) + ". Komponente an");
-			}catch(Exception e){
+				_values[Index] = Console.Float("Bitte geben Sie die " + (Index + 1) + ". Komponente an");
+			}catch(IOException e){
 				System.out.println();
 				System.out.println("Fehler beim lesen der Eingabe.");
 			}
@@ -187,8 +194,9 @@ public class Vector{
 	/**
 	 * Gibt dem Benutzer die Möglichkeit die Komponenten über die Konsole einzugeben.
 	 * @return  Vektor von dem die Funktion aufgerufen wurde
+	 * @throws DimensionException 
 	 */
-	public Vector getInput(){
+	public Vector getInput() throws DimensionException{
 		for(int i = 0; i < _values.length; i++)
 			this.getInput(i);
 		return this;
@@ -205,7 +213,7 @@ public class Vector{
 		return new Vector(v[0].getDimension()).Add(v);
 	}
 	
-	public static Vector CrossProduct(Vector v1, Vector v2){
+	public static Vector CrossProduct(Vector v1, Vector v2) throws DimensionException{
 		return v1.Clone().CrossProduct(v2);
 	}
 	
@@ -215,8 +223,9 @@ public class Vector{
 	 * @param v2
 	 * @param v3
 	 * @return
+	 * @throws DimensionException 
 	 */
-	public static float TripleProduct(Vector v1, Vector v2, Vector v3){
+	public static float TripleProduct(Vector v1, Vector v2, Vector v3) throws DimensionException{
 		return v1.Clone().CrossProduct(v2).DotProduct(v3);
 	}
 	
