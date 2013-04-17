@@ -1,7 +1,11 @@
 import java.io.IOException;
 
 
-
+/**
+ * 
+ * @author Tobias Brosge (539713)
+ *
+ */
 public class Vector{
 	class DimensionException extends Exception{
 		private static final long serialVersionUID = 1L;
@@ -14,8 +18,11 @@ public class Vector{
 	/**
 	 * 
 	 * @param Dimension
+	 * @throws DimensionException 
 	 */
-	public Vector(int Dimension){
+	public Vector(int Dimension) throws DimensionException{
+		if(Dimension < 0) throw new DimensionException("Die Anzahl der Dimensionen muss Positiv sein.");
+		if(Dimension > 7) throw new DimensionException("Die maximale Dimension der Vektoren ist die Siebte.");
 		_values = new float[Dimension];
 	}
 	
@@ -24,7 +31,7 @@ public class Vector{
 	 * @param Values
 	 */
 	public Vector(float... Values){
-		_values = Values;
+		_values = Values.clone();
 	}
 	
 	/**
@@ -168,7 +175,7 @@ public class Vector{
 	 * @return  Vektor von dem die Funktion aufgerufen wurde
 	 */
 	public Vector print(){
-		System.out.println(this);
+		Console.writeln(this.toString());
 		return this;
 	}
 
@@ -182,17 +189,17 @@ public class Vector{
 			throw new DimensionException("Eingabe - Der Index zur Eingabe ist auserhalb der Dimenson des Vectors.");
 		else{
 			try{
-				_values[Index] = Console.Float("Bitte geben Sie die " + (Index + 1) + ". Komponente an");
+				_values[Index] = Console.getFloat("Bitte geben Sie die " + (Index + 1) + ". Komponente an");
 			}catch(IOException e){
-				System.out.println();
-				System.out.println("Fehler beim lesen der Eingabe.");
+				Console.writeln();
+				Console.writeln("Fehler beim lesen der Eingabe.");
 			}
 		}
 		return this;
 	}
 
 	/**
-	 * Gibt dem Benutzer die Möglichkeit die Komponenten über die Konsole einzugeben.
+	 * Gibt dem Benutzer die Möglichkeit alle Komponenten über die Konsole einzugeben.
 	 * @return  Vektor von dem die Funktion aufgerufen wurde
 	 * @throws DimensionException 
 	 */
@@ -208,11 +215,18 @@ public class Vector{
 	 * @return Ein Vektor, dessen Komponenten die Summen der Positionsgleichen Komponenten der als Parameter übergebenden Vektoren sind
 	 * @throws Exception
 	 */
-	public static Vector Sum(Vector... v) throws Exception{
+	public static Vector Sum(Vector... v) throws Exception, DimensionException{
 		if(v.length == 0) throw new Exception("No Vector given.");
 		return new Vector(v[0].getDimension()).Add(v);
 	}
 	
+	/**
+	 * Bildet das Kreuzprodukt aus zwei Vektoren
+	 * @param v1
+	 * @param v2
+	 * @return
+	 * @throws DimensionException
+	 */
 	public static Vector CrossProduct(Vector v1, Vector v2) throws DimensionException{
 		return v1.Clone().CrossProduct(v2);
 	}
@@ -231,7 +245,7 @@ public class Vector{
 	
 	@Override
 	public String toString(){
-		String result = "Vector(" + (_values.length > 0 ? _values[0] : "");
+		String result = "Vektor(" + (_values.length > 0 ? _values[0] : "");
 		for(int i = 1; i < _values.length; i++)
 			result += ", " + _values[i];
 		return result + ")";
