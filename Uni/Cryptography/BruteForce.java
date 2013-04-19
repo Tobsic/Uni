@@ -3,10 +3,10 @@ import java.util.Iterator;
 
 
 public class BruteForce implements Iterable<String>, Iterator<String>{
-	private boolean _hasNext;
 	private int _minLength, _maxLength;
 	long _seed;
 	private ArrayList<Character> _usedChars;
+	private long[] _subSeedStart;
 
 	/**
 	 * Create a new Brutforce object that provides a iterator for all possible string combianation of given chars.
@@ -44,6 +44,7 @@ public class BruteForce implements Iterable<String>, Iterator<String>{
 		_minLength = MinLength;
 		if(_minLength > _maxLength)
 			_maxLength = _minLength;
+		calculateSubSeeds();
 	}
 	
 	/**
@@ -55,6 +56,7 @@ public class BruteForce implements Iterable<String>, Iterator<String>{
 		_maxLength = MaxLength;
 		if(_maxLength < _minLength)
 			_minLength = _maxLength;
+		calculateSubSeeds();
 	}
 	
 	/**
@@ -67,6 +69,7 @@ public class BruteForce implements Iterable<String>, Iterator<String>{
 		for(char c : Chars)
 			if(!_usedChars.contains(c))
 				_usedChars.add(c);
+		calculateSubSeeds();
 	}
 
 	/**
@@ -76,24 +79,25 @@ public class BruteForce implements Iterable<String>, Iterator<String>{
 	 */
 	public String getKey(long Seed){
 		String result = "";
-		int len = _minLength;
-		long subseed = Seed;
-		while(subseed >= 0)
-			subseed -= Math.pow(_usedChars.size(), len++);
-		subseed += Math.pow(_usedChars.size(), --len);
+		int len;
+		long subseed;
+		int index = 0;
+		while(Seed >= _subSeedStart[++index]);
+		index--;
+		len = _minLength + index;
+		subseed = Seed - _subSeedStart[index];
 		for(int i = 0; i < len; i++)
 			result = _usedChars.get((int)((subseed / Math.pow(_usedChars.size(), i)) % _usedChars.size())) + result;
-		if(_seed == Seed && len == _maxLength)
-			_hasNext = (subseed != Math.pow(_usedChars.size(), _maxLength) - 1);
 		return result;
 	}
+	
 	/**
 	 * Get the next Key. If it is over the last, it takes the first
 	 * @return
 	 */
 	public String getNext(){
-		if(!_hasNext)
-			resetSeed();
+		if(!hasNext())
+			_seed = -1;
 		return getKey(++_seed);
 	}
 	/**
@@ -101,7 +105,15 @@ public class BruteForce implements Iterable<String>, Iterator<String>{
 	 */
 	public void resetSeed(){
 		_seed = -1;
-		_hasNext = true;
+	}
+	private void calculateSubSeeds(){
+		long subseed = 0;
+		int charCount = _usedChars.size();
+		_subSeedStart = new long[_maxLength - _minLength + 2];
+		for(int i = 0; i < _subSeedStart.length; i++){
+			_subSeedStart[i] = subseed;
+			subseed += Math.pow(charCount, _minLength + i);
+		}
 	}
 	
 	//Iterable
@@ -116,7 +128,7 @@ public class BruteForce implements Iterable<String>, Iterator<String>{
 		
 	@Override
 	public boolean hasNext() {
-		return _hasNext;
+		return _seed < _subSeedStart[_subSeedStart.length - 1] - 1;
 	}
 	@Override
 	public String next() {
