@@ -16,9 +16,9 @@ public class Vector{
 	private float[] _values;
 	
 	/**
-	 * 
-	 * @param Dimension
-	 * @throws DimensionException 
+	 * Creats a new zero-vector with in the given dimension (maximum 7).
+	 * @param Dimension Dimension of the new vector (maximum 7)
+	 * @throws DimensionException Dimension must be between 0 and 7
 	 */
 	public Vector(int Dimension) throws DimensionException{
 		if(Dimension < 0) throw new DimensionException("Die Anzahl der Dimensionen muss Positiv sein.");
@@ -27,31 +27,35 @@ public class Vector{
 	}
 	
 	/**
-	 * 
-	 * @param Values
+	 * Creates a new vector with the given components.
+	 * @param Values Components of the new vector
+	 * @throws DimensionException Maximum 7 components are accepted
 	 */
-	public Vector(float... Values){
+	public Vector(float... Values) throws DimensionException{
+		if(Values.length > 7) throw new DimensionException("Die maximale Dimension der Vektoren ist die Siebte");
 		_values = Values.clone();
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Return the dimension of the vector.
+	 * @return Dimension of the Vector
 	 */
-	public int getDimension(){ return _values.length; }
+	public int getDimension(){
+		return _values.length;
+	}
 	
 	/**
-	 * Gibt den Wert einer Komponente zurück
-	 * @param Index Index der Komponente
-	 * @return Wert der Komponente
+	 * Return the value of a component.
+	 * @param Index Index of the component
+	 * @return Value of the component
 	 */
 	public float getValue(int Index){
 		return _values[Index];
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Return the length of dimension.
+	 * @return Length of the Vector
 	 */
 	public float getLength(){
 		float sqResult = 0;
@@ -61,10 +65,10 @@ public class Vector{
 	}
 	
 	/**
-	 * 
-	 * @param Index
-	 * @param Value
-	 * @return Vektor von dem die Funktion aufgerufen wurde
+	 * Set a component to a value.
+	 * @param Index Index of the component
+	 * @param Value New value of the component
+	 * @return This vector
 	 */
 	public Vector setValue(int Index, float Value){
 		_values[Index] = Value;
@@ -72,9 +76,9 @@ public class Vector{
 	}
 	
 	/**
-	 * 
-	 * @param Vectors
-	 * @return Vektor von dem die Funktion aufgerufen wurde
+	 * Add vectors (component by component) to this vector.
+	 * @param Vectors Vectors to add
+	 * @return This vector
 	 * @throws
 	 */
 	public Vector Add(Vector... Vectors) throws DimensionException{
@@ -88,22 +92,22 @@ public class Vector{
 	}
 	
 	/**
-	 * 
-	 * @param v
-	 * @return Vektor von dem die Funktion aufgerufen wurde
+	 * Subtract a vector (component by component) from this vector.
+	 * @param vector Vector to subtract
+	 * @return This vector
 	 */
-	public Vector Diff(Vector v) throws DimensionException{
+	public Vector Diff(Vector vector) throws DimensionException{
 		if(_values.length != this.getDimension())
 			throw new DimensionException("Differenz - Die Dimensionen der Vektoren stimmen nicht überein.");
 		for(int i = 0; i < _values.length; i++)
-			_values[i] -= v.getValue(i);
+			_values[i] -= vector.getValue(i);
 		return this;
 	}
 	
 	/**
-	 * 
-	 * @param Value
-	 * @return Vektor von dem die Funktion aufgerufen wurde
+	 * Multiplies each component with the value.
+	 * @param Value Value to multiply with
+	 * @return This vector
 	 */
 	public Vector Multiply(float Value){
 		for(int i = 0; i < _values.length; i++)
@@ -112,9 +116,9 @@ public class Vector{
 	}
 	
 	/**
-	 * 
-	 * @param Value
-	 * @return Vektor von dem die Funktion aufgerufen wurde
+	 * Divides each component by the value.
+	 * @param Value Value to divied by
+	 * @return This vector
 	 */
 	public Vector Divide(float Value){
 		for(int i = 0; i < _values.length; i++)
@@ -123,17 +127,17 @@ public class Vector{
 	}
 	
 	/**
-	 * Erstellt einen Klon des Vektors
-	 * @return Eine Klon des Vektors
+	 * Creates a clone of this vector
+	 * @return A clone of this vector
 	 */
-	public Vector Clone(){
+	public Vector Clone() throws DimensionException{
 		return new Vector(_values);
 	}
 	
 	/**
-	 * Errechnet das Skalarprodukt
-	 * @param v Vector der zur berechnung genutz werden soll
-	 * @return
+	 * Calculate the dot product.
+	 * @param v Vector to multiply with
+	 * @return Cross of this vector and the given vector
 	 */
 	public float DotProduct(Vector v) throws DimensionException{
 		if(_values.length != this.getDimension())
@@ -145,9 +149,9 @@ public class Vector{
 	}
 	
 	/**
-	 * 
-	 * @param v
-	 * @return Vektor von dem die Funktion aufgerufen wurde
+	 * Calculate the cross product.
+	 * @param v Vector to multiply with
+	 * @return This vector
 	 */
 	public Vector CrossProduct(Vector v) throws DimensionException{
 		if(_values.length != 3 || v.getDimension() != 3)
@@ -163,16 +167,16 @@ public class Vector{
 	}
 	
 	/**
-	 * Wandelt den Vektor in einen Einheitsvektor um
-	 * @return Vektor von dem die Funktion aufgerufen wurde
+	 * Make this vector to a unit vecot.
+	 * @return this vector
 	 */
-	public Vector UnitVector(){
+	public Vector toUnit(){
 		return this.Divide(this.getLength());
 	}
 
 	/**
-	 * Gibt den Vektor als Text in der Konsole aus.
-	 * @return  Vektor von dem die Funktion aufgerufen wurde
+	 * Write this vector to console.
+	 * @return This vector
 	 */
 	public Vector print(){
 		Console.writeln(this.toString());
@@ -180,67 +184,65 @@ public class Vector{
 	}
 
 	/**
-	 * Gibt dem Benutzer die Möglichkeit eine Komponenten über die Konsole einzugeben.
-	 * @param Index Index des festzulegenden Wertes
-	 * @return  Vektor von dem die Funktion aufgerufen wurde
+	 * Let the user edit a component by console.
+	 * @param Index Index of the component
+	 * @return This vector
 	 */
-	public Vector getInput(int Index) throws DimensionException{
+	public Vector getInput(int Index) throws DimensionException, IOException{
 		if(Index < 0 || Index >= _values.length)
 			throw new DimensionException("Eingabe - Der Index zur Eingabe ist auserhalb der Dimenson des Vectors.");
-		else{
-			try{
-				_values[Index] = Console.getFloat("Bitte geben Sie die " + (Index + 1) + ". Komponente an");
-			}catch(IOException e){
-				Console.writeln();
-				Console.writeln("Fehler beim lesen der Eingabe.");
-			}
-		}
+		else
+			_values[Index] = Console.getFloat("Bitte geben Sie die " + (Index + 1) + ". Komponente an");
 		return this;
 	}
 
 	/**
-	 * Gibt dem Benutzer die Möglichkeit alle Komponenten über die Konsole einzugeben.
-	 * @return  Vektor von dem die Funktion aufgerufen wurde
+	 * Let the user edit all components by console.
+	 * @return This vecotr
 	 * @throws DimensionException 
 	 */
-	public Vector getInput() throws DimensionException{
-		for(int i = 0; i < _values.length; i++)
-			this.getInput(i);
+	public Vector getInput() throws IOException{
+		try{ // cant be a DimensionException
+			for(int i = 0; i < _values.length; i++)
+				this.getInput(i);
+		}catch(DimensionException e){ }
 		return this;
 	}
 	
 	/**
-	 * Funktion zum Summieren von Vektoren.
-	 * @param v Aufzusummierende Vektoren
-	 * @return Ein Vektor, dessen Komponenten die Summen der Positionsgleichen Komponenten der als Parameter übergebenden Vektoren sind
-	 * @throws Exception
+	 * Adds all Vectors.
+	 * @param v Vectors to be summed
+	 * @return Sum of the vectors
+	 * @throws Exception No vector given
+	 * @throws DimensionException not all vectors have the same dimension
 	 */
 	public static Vector Sum(Vector... v) throws Exception, DimensionException{
-		if(v.length == 0) throw new Exception("No Vector given.");
+		if(v.length == 0)
+			throw new Exception("No Vector given.");
 		return new Vector(v[0].getDimension()).Add(v);
 	}
 	
 	/**
-	 * Bildet das Kreuzprodukt aus zwei Vektoren
-	 * @param v1
-	 * @param v2
-	 * @return
-	 * @throws DimensionException
+	 * Calculate the cross product of two vectors.
+	 * @param vector1 First vector of the cross prodcut
+	 * @param vector2 Second vector of the cross product
+	 * @return The cross pruduct of vector1 and vector 2
+	 * @throws DimensionException The two vectors musst be in the thrid dimension
 	 */
-	public static Vector CrossProduct(Vector v1, Vector v2) throws DimensionException{
-		return v1.Clone().CrossProduct(v2);
+	public static Vector CrossProduct(Vector vector1, Vector vector2) throws DimensionException{
+		return vector1.Clone().CrossProduct(vector2);
 	}
 	
 	/**
-	 * Bildet das Spatprodukt der Vektoren (v1 x v2) * v3
-	 * @param v1
-	 * @param v2
-	 * @param v3
-	 * @return
-	 * @throws DimensionException 
+	 * Calculate the triple product of three vectors (vector1 x vector2) * vector3.
+	 * @param vector1 The first vector
+	 * @param vector2 The second vector
+	 * @param vector3 The third vector
+	 * @return The triple product of vector1, vector2 and vector3
+	 * @throws DimensionException The three vectors musst be in the thrid dimension
 	 */
-	public static float TripleProduct(Vector v1, Vector v2, Vector v3) throws DimensionException{
-		return v1.Clone().CrossProduct(v2).DotProduct(v3);
+	public static float TripleProduct(Vector vector1, Vector vector2, Vector vector3) throws DimensionException{
+		return vector1.Clone().CrossProduct(vector2).DotProduct(vector3);
 	}
 	
 	@Override
