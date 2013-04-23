@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /**
  * 
  * @author Tobias Brosge (539713)
+ * @author Veit Heller (539501)
  *
  */
 public class program {

@@ -4,6 +4,7 @@ import java.io.IOException;
 /**
  * 
  * @author Tobias Brosge (539713)
+ * @author Veit Heller (539501)
  *
  */
 public class Vector{

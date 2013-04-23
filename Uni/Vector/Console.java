@@ -8,6 +8,7 @@ import java.text.MessageFormat;
 /**
  * 
  * @author Tobias Brosge (539713)
+ * @author Veit Heller (539501)
  *
  */
 
