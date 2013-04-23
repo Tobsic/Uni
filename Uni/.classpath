@@ -4,6 +4,8 @@
 	<classpathentry kind="src" path="Vector"/>
 	<classpathentry kind="src" path="Determinanten"/>
 	<classpathentry kind="src" path="Cryptography"/>
+	<classpathentry kind="src" path="Kaffemühle"/>
+	<classpathentry kind="src" path="Rechteck"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
