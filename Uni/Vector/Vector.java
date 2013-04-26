@@ -14,7 +14,7 @@ public class Vector{
 		public DimensionException(String Message){ super(Message); }
 	}
 	
-	private float[] _values;
+	private double[] _values;
 	
 	/**
 	 * Creats a new zero-vector with in the given dimension (maximum 7).
@@ -24,7 +24,7 @@ public class Vector{
 	public Vector(int Dimension) throws DimensionException{
 		if(Dimension < 0) throw new DimensionException("Die Anzahl der Dimensionen muss Positiv sein.");
 		if(Dimension > 7) throw new DimensionException("Die maximale Dimension der Vektoren ist die Siebte.");
-		_values = new float[Dimension];
+		_values = new double[Dimension];
 	}
 	
 	/**
@@ -32,7 +32,7 @@ public class Vector{
 	 * @param Values Components of the new vector
 	 * @throws DimensionException Maximum 7 components are accepted
 	 */
-	public Vector(float... Values) throws DimensionException{
+	public Vector(double... Values) throws DimensionException{
 		if(Values.length > 7) throw new DimensionException("Die maximale Dimension der Vektoren ist die Siebte");
 		_values = Values.clone();
 	}
@@ -50,7 +50,7 @@ public class Vector{
 	 * @param Index Index of the component
 	 * @return Value of the component
 	 */
-	public float getValue(int Index){
+	public double getValue(int Index){
 		return _values[Index];
 	}
 	
@@ -58,11 +58,11 @@ public class Vector{
 	 * Return the length of dimension.
 	 * @return Length of the Vector
 	 */
-	public float getLength(){
-		float sqResult = 0;
-		for(float f : _values)
+	public double getLength(){
+		double sqResult = 0;
+		for(double f : _values)
 			sqResult += f * f;
-		return (float)Math.sqrt(sqResult);
+		return (double)Math.sqrt(sqResult);
 	}
 	
 	/**
@@ -71,7 +71,7 @@ public class Vector{
 	 * @param Value New value of the component
 	 * @return This vector
 	 */
-	public Vector setValue(int Index, float Value){
+	public Vector setValue(int Index, double Value){
 		_values[Index] = Value;
 		return this;
 	}
@@ -110,7 +110,7 @@ public class Vector{
 	 * @param Value Value to multiply with
 	 * @return This vector
 	 */
-	public Vector Multiply(float Value){
+	public Vector Multiply(double Value){
 		for(int i = 0; i < _values.length; i++)
 			_values[i] *= Value;
 		return this;
@@ -121,7 +121,7 @@ public class Vector{
 	 * @param Value Value to divied by
 	 * @return This vector
 	 */
-	public Vector Divide(float Value){
+	public Vector Divide(double Value){
 		for(int i = 0; i < _values.length; i++)
 			_values[i] /= Value;
 		return this;
@@ -140,10 +140,10 @@ public class Vector{
 	 * @param v Vector to multiply with
 	 * @return Cross of this vector and the given vector
 	 */
-	public float DotProduct(Vector v) throws DimensionException{
+	public double DotProduct(Vector v) throws DimensionException{
 		if(_values.length != this.getDimension())
 			throw new DimensionException("Skalarprodukt - Die Dimensionen der Vektoren stimmen nicht überein.");
-		float result = 0;
+		double result = 0;
 		for(int i = 0; i < _values.length; i++)
 			result += _values[i] * v.getValue(i);
 		return result;
@@ -242,7 +242,7 @@ public class Vector{
 	 * @return The triple product of vector1, vector2 and vector3
 	 * @throws DimensionException The three vectors musst be in the thrid dimension
 	 */
-	public static float TripleProduct(Vector vector1, Vector vector2, Vector vector3) throws DimensionException{
+	public static double TripleProduct(Vector vector1, Vector vector2, Vector vector3) throws DimensionException{
 		return vector1.Clone().CrossProduct(vector2).DotProduct(vector3);
 	}
 	

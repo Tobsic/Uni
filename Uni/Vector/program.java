@@ -21,6 +21,7 @@ public class program {
 	public static void main(String[] args){
 		vectors = new ArrayList<Vector>();		
 		mainMenu("Hauptmenü");
+		
 
 //		Console.writeln("Die Länge des Vektors ist: {0}", new Vector(3).getInput().getLength());
 		/*Vector v = new Vector(3);
