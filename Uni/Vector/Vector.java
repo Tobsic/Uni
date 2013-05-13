@@ -118,7 +118,7 @@ public class Vector{
 	
 	/**
 	 * Divides each component by the value.
-	 * @param Value Value to divied by
+	 * @param Value Value to dived by
 	 * @return This vector
 	 */
 	public Vector Divide(double Value){
@@ -168,7 +168,7 @@ public class Vector{
 	}
 	
 	/**
-	 * Make this vector to a unit vecot.
+	 * Make this vector to a unit vector.
 	 * @return this vector
 	 */
 	public Vector toUnit(){
@@ -199,11 +199,11 @@ public class Vector{
 
 	/**
 	 * Let the user edit all components by console.
-	 * @return This vecotr
+	 * @return This vector
 	 * @throws DimensionException 
 	 */
 	public Vector getInput() throws IOException{
-		try{ // cant be a DimensionException
+		try{ // can't be a DimensionException
 			for(int i = 0; i < _values.length; i++)
 				this.getInput(i);
 		}catch(DimensionException e){ }
@@ -225,10 +225,10 @@ public class Vector{
 	
 	/**
 	 * Calculate the cross product of two vectors.
-	 * @param vector1 First vector of the cross prodcut
+	 * @param vector1 First vector of the cross product
 	 * @param vector2 Second vector of the cross product
-	 * @return The cross pruduct of vector1 and vector 2
-	 * @throws DimensionException The two vectors musst be in the thrid dimension
+	 * @return The cross product of vector1 and vector 2
+	 * @throws DimensionException The two vectors must be in the third dimension
 	 */
 	public static Vector CrossProduct(Vector vector1, Vector vector2) throws DimensionException{
 		return vector1.Clone().CrossProduct(vector2);
@@ -240,7 +240,7 @@ public class Vector{
 	 * @param vector2 The second vector
 	 * @param vector3 The third vector
 	 * @return The triple product of vector1, vector2 and vector3
-	 * @throws DimensionException The three vectors musst be in the thrid dimension
+	 * @throws DimensionException The three vectors must be in the third dimension
 	 */
 	public static double TripleProduct(Vector vector1, Vector vector2, Vector vector3) throws DimensionException{
 		return vector1.Clone().CrossProduct(vector2).DotProduct(vector3);

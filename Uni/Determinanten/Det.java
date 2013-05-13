@@ -3,9 +3,9 @@ public class Det{
 		Console.clear();
 		int dem = Console.getInteger("Anzahl der Spalten/Zeilen");
 		double[][] matrix = new double[dem][dem];
-		for(int row = 0; row < dem; row++)
-			for(int span = 0; span < dem; span++)
-				matrix[row][span] = Console.getDouble("Wert f¸r " + (row + 1) + ". Zeile, " + (span + 1) + ". Spalte");
+		for(int rowIndex = 0; rowIndex < dem; rowIndex++)
+			for(int columnIndex = 0; columnIndex < dem; columnIndex++)
+				matrix[rowIndex][columnIndex] = Console.getDouble("Wert f¸r " + (rowIndex + 1) + ". Zeile, " + (columnIndex + 1) + ". Spalte");
 		Console.writeln();
 		Console.writeln("Die Determinante ist laut Rekursion: {0}", detRecursiv(matrix));
 		Console.writeln("Die Determinante ist laut Gauﬂ:      {0}", detByGauﬂ(matrix));
@@ -28,8 +28,8 @@ public class Det{
 		double result = 1;
 		for(int selectedRow = 0; selectedRow < dimension; selectedRow++){
 			for(int copyRow = 0; copyRow < dimension - 1; copyRow++)
-				for(int copySpan = 1; copySpan < dimension; copySpan++)
-					subdeterminant[copyRow][copySpan - 1] = matrix[copyRow >= selectedRow ? copyRow + 1 : copyRow][copySpan];
+				for(int copyColumn = 1; copyColumn < dimension; copyColumn++)
+					subdeterminant[copyRow][copyColumn - 1] = matrix[copyRow >= selectedRow ? copyRow + 1 : copyRow][copyColumn];
 			result *= (selectedRow % 2 * -2 + 1) * matrix[selectedRow][0] *  _detRecursiv(subdeterminant);
 		}
 		return result;
@@ -44,14 +44,14 @@ public class Det{
 		return _detByGauﬂ(matrix);
 	}
 	public static double _detByGauﬂ(double[][] matrix){
-		for(int i = 0; i < matrix.length; i++)
-			for(int j = i + 1; j < matrix.length; j++){
-				for(int k = i + 1; k < matrix.length; k++)
-					if(matrix[i][i] == 0)
+		for(int pivotIndex = 0; pivotIndex < matrix.length; pivotIndex++)
+			for(int rowIndex = pivotIndex + 1; rowIndex < matrix.length; rowIndex++){
+				for(int spanIndex = pivotIndex + 1; spanIndex < matrix.length; spanIndex++)
+					if(matrix[pivotIndex][pivotIndex] == 0)
 						return 0;
 					else
-						matrix[j][k] -= matrix[i][k] * matrix[j][i] / matrix[i][i];
-				matrix[j][i] = 0;
+						matrix[rowIndex][spanIndex] -= matrix[pivotIndex][spanIndex] * matrix[rowIndex][pivotIndex] / matrix[pivotIndex][pivotIndex];
+				matrix[rowIndex][pivotIndex] = 0;
 			}
 		double result = 1;
 		for(int i = 0; i < matrix.length; i++)

@@ -7,9 +7,9 @@ public class Game {
 		PLAYER2_COLOR	= Color.YELLOW,
 		LINE_COLOR		= Color.BLACK;
 	public static int
-		FIELD_SIZE	= 400,
-		CIRCLE_SIZE	=  32,
-		LINE_SIZE	=   4;
+		FIELD_SIZE		= 400,
+		CIRCLE_RADIUS	=  16,
+		LINE_SIZE		=   4;
 		
 	public static void main(String[] args){
 //		GameWindow mainWindow =

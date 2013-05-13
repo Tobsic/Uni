@@ -13,6 +13,35 @@ import java.text.MessageFormat;
  */
 
 public class Console {
+	/**
+	 * Concat the Values of a string array and seperate them whith a given string 
+	 * @param Array string array to join
+	 * @param d seperator
+	 * @return joined string of array values
+	 */
+	public static String join(String d, String...Array)
+	{
+	        if (Array.length == 0) return "";
+	        String result = Array[0];
+	        for(int i = 1; i < Array.length; i++)
+	            result += d + Array[i];
+	        return result;
+	}
+	/**
+	 * Concat the Values of a string array and seperate them whith a given string 
+	 * @param Array string array to join
+	 * @param d seperator
+	 * @return joined string of array values
+	 */
+	public static String join(String d, double...Array)
+	{
+	        if (Array.length == 0) return "";
+	        String result = Array[0] + "";
+	        for(int i = 1; i < Array.length; i++)
+	            result += d + Array[i];
+	        return result;
+	}
+	
 	private static BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 	
 	/**
