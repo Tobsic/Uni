@@ -16,45 +16,52 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 		this.setBackground(new Color(0,0,0,0));
 		GridLayout layout = new GridLayout(size, size, 3, 3);
 		this.setLayout(layout);
-
-		_size = size;
+		init(size);
+		this.setSize(500, 500);
+		this.setVisible(true);
+	}
+	
+	public void init(int Size){
+		_size = Size;
 		_activePlayer = 1;
 		_player1Own = 2;
 		_player2Own = 2;
 
-		_field = new ReversiButton[size][size];
-		for (int y = 0; y < size; y++)
-			for (int x = 0; x < size; x++) {
+		_field = new ReversiButton[_size][_size];
+		for (int y = 0; y < _size; y++)
+			for (int x = 0; x < _size; x++) {
 				ReversiButton btn = new ReversiButton(x, y, this);
-				if (x == size / 2 && y == size / 2)
+				if (x == _size / 2 && y == _size / 2)
 					btn.setPlayer(1);
-				if (x == size / 2 - 1 && y == size / 2)
+				if (x == _size / 2 - 1 && y == _size / 2)
 					btn.setPlayer(2);
-				if (x == size / 2 - 1 && y == size / 2 - 1)
+				if (x == _size / 2 - 1 && y == _size / 2 - 1)
 					btn.setPlayer(1);
-				if (x == size / 2 && y == size / 2 - 1)
+				if (x == _size / 2 && y == _size / 2 - 1)
 					btn.setPlayer(2);
 				_field[x][y] = btn;
 				this.add(btn);
 			}
 		updatePossibleMoves();
-		this.setSize(500, 500);
-		this.setVisible(true);
 	}
 
 	boolean CanSet(int player, int x, int y) {
-		if (player != 1 && player != 2 || _field[x][y].getPlayer() != 0)
-			return false;
-		return checkRow(player, x, y, 1, 0) > 0
-				|| checkRow(player, x, y, -1, 0) > 0
-				|| checkRow(player, x, y, 0, 1) > 0
-				|| checkRow(player, x, y, 0, -1) > 0
-				|| checkRow(player, x, y, 1, 1) > 0
-				|| checkRow(player, x, y, 1, -1) > 0
-				|| checkRow(player, x, y, -1, -1) > 0
-				|| checkRow(player, x, y, -1, 1) > 0;
+		return (player == 1 || player == 2) &&
+				_field[x][y].getPlayer() == 0 &&
+				checkPosition(player, x, y) > 0;
 	}
-
+	
+	int checkPosition(int player, int x, int y){
+		return checkRow(player, x, y, 1, 0) +
+			   checkRow(player, x, y,-1, 0) +
+			   checkRow(player, x, y, 0, 1) +
+			   checkRow(player, x, y, 0,-1) +
+			   checkRow(player, x, y, 1, 1) +
+			   checkRow(player, x, y, 1,-1) +
+			   checkRow(player, x, y,-1,-1) +
+			   checkRow(player, x, y,-1, 1);
+	}
+	
 	int checkRow(int x, int y, int xspeed, int yspeed) {
 		return checkRow(_field[x][y].getPlayer(), x, y, xspeed, yspeed);
 	}
@@ -66,7 +73,7 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 			y += yspeed;
 			if (x >= _size || x < 0 || y >= _size || y < 0
 					|| _field[x][y].getPlayer() == 0)
-				return -1;
+				return 0;
 			result++;
 		} while (_field[x][y].getPlayer() != player);
 		return result;
