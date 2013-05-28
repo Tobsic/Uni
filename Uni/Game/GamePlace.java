@@ -1,4 +1,3 @@
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -9,24 +8,25 @@ import javax.swing.JComponent;
 public class GamePlace extends JComponent {
 	private static final long serialVersionUID = 1L;
 
-	private  int Player;
+	private int player;
+	private Point position;
 	
-	public GamePlace() {
-		this(0, 0);
+	public GamePlace(Point Position) {
+		this(Position, 0, 0);
 	}
 	
-	GamePlace(Point p){
-		this(p.x, p.y);
+	GamePlace(Point Position, Point location){
+		this(Position, location.x, location.y);
 	}
 	
-	GamePlace(int x, int y){
-		Player = 0;
-		this.setCenter(x, y);
-		this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	GamePlace(Point Position, int locationX, int locationY){
+		player = 0;
+		position = Position;
+		this.setCenter(locationX, locationY);
 	}
 	
 	public void setPlayer(int Player){
-		this.Player = Player <= 2 && Player >= 0 ? Player : 0;
+		this.player = Player <= 2 && Player >= 0 ? Player : 0;
 		this.invalidate();
 	}
 	
@@ -39,15 +39,19 @@ public class GamePlace extends JComponent {
 	}
 	
 	public int getPlayer(){
-		return Player;
+		return player;
 	}
 
+	public Point getPosition(){
+		return position;
+	}
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Game.LINE_COLOR);
 		g.fillOval(0, 0, Game.CIRCLE_RADIUS * 2, Game.CIRCLE_RADIUS * 2);
-		g.setColor(Player == 1 ? Game.PLAYER1_COLOR : Player == 2 ? Game.PLAYER2_COLOR : Game.BACK_COLOR);
+		g.setColor(player == 1 ? Game.PLAYER1_COLOR : player == 2 ? Game.PLAYER2_COLOR : Game.BACK_COLOR);
 		g.fillOval(Game.LINE_SIZE, Game.LINE_SIZE, 2 * (Game.CIRCLE_RADIUS - Game.LINE_SIZE), 2 * (Game.CIRCLE_RADIUS - Game.LINE_SIZE));
 	}
 

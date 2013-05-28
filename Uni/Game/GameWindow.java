@@ -1,3 +1,6 @@
+import java.awt.Dimension;
+import java.awt.Insets;
+
 import javax.swing.JFrame;
 
 
@@ -8,9 +11,14 @@ public class GameWindow extends JFrame {
 
 	public GameWindow(){
 		super("Mühle");
+		GamePanel gp = new GamePanel();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500, 500);
 		this.setVisible(true);
-		this.setContentPane(new GamePanel());
+		this.setContentPane(gp);
+		Dimension gpDim = gp.getSize();
+		Insets thisInsets = this.getInsets();
+		this.setSize(thisInsets.left + gpDim.width + thisInsets.right, thisInsets.top + gpDim.height + thisInsets.bottom);
+		this.setResizable(false);
 	}
 }

@@ -7,6 +7,8 @@
 	<classpathentry kind="src" path="Kaffemühle"/>
 	<classpathentry kind="src" path="Rechteck"/>
 	<classpathentry kind="src" path="ComplexNumber"/>
+	<classpathentry kind="src" path="HouseAndTree"/>
+	<classpathentry kind="src" path="Reversi"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

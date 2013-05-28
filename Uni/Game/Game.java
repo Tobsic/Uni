@@ -9,7 +9,7 @@ public class Game {
 	public static int
 		FIELD_SIZE		= 400,
 		CIRCLE_RADIUS	=  16,
-		LINE_SIZE		=   4;
+		LINE_SIZE		=   3;
 		
 	public static void main(String[] args){
 //		GameWindow mainWindow =

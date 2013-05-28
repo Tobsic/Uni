@@ -128,4 +128,37 @@ public class Console {
 		}
 		return Double.parseDouble(value);
 	}
+	/**
+	 * Gives the ability to read a single character from console and repeat if no single character entered.
+	 * @param Message Formated string that stands in front of the input cursor
+	 * @param args Arguments to bring into formated string
+	 * @return User input as single character
+	 * @throws IOException
+	 */
+	public static char getChar(String Message, Object...args) throws IOException{
+		String result;
+		write(Message + ":", args);
+		while((result = console.readLine()).length() != 1)
+			write("Es darf nur ein Char eingegeben werden: ");
+		return result.charAt(0);
+	}
+	/**
+	 * Gives the ability to read a entered line from console.
+	 * @param Message Formated string that stands in front of the input cursor
+	 * @param args Arguments to bring into formated string
+	 * @return User input as string
+	 * @throws IOException
+	 */
+	public static String getString(String Message, Object...args) throws IOException {
+		write(Message + ":", args);
+		return console.readLine();
+	}
+	/**
+	 * Gives the ability to read a entered line from console without message.
+	 * @return User input as string
+	 * @throws IOException
+	 */
+	public static String getString() throws IOException{
+		return console.readLine();
+	}
 }

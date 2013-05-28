@@ -1,22 +1,28 @@
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.dnd.DragSource;
 
 import javax.swing.JPanel;
 
-
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-//	int[][] Chips;
 	GamePlace[][] Places;
+	boolean activePlayer; // false = player1; true = player2
+	int turn;
+	GamePlace selectedPlace = null;
+	
 	
 	public GamePanel(){
+		activePlayer = false;
+		turn = 0;
 		setLayout(null);
 		Places = new GamePlace[8][3];
 		for(int i = 0; i < 8; i++){
 			float p1 = i;
 			for(int j = 0; j < 3; j++){
 				float p2 = (float)(j + 1) / 3f;
-				this.add(Places[i][j] = new GamePlace(
+				this.add(Places[i][j] = new GamePlace(new Point(i, j),
 					i < 2 ? offset((p1 - 1) * p2	, -p2			) :
 					i < 4 ? offset( p2				, (p1 - 3) * p2 ) :
 					i < 6 ? offset((5 - p1) * p2	,  p2			) :
@@ -75,5 +81,29 @@ public class GamePanel extends JPanel {
 		return new Point(
 				Game.FIELD_SIZE / 2 + (int)(x * ((float)Game.FIELD_SIZE / 2f - (float)Game.CIRCLE_RADIUS)),
 				Game.FIELD_SIZE / 2 + (int)(y * ((float)Game.FIELD_SIZE / 2f - (float)Game.CIRCLE_RADIUS)));
+	}
+	
+	public boolean hoverPlace(GamePlace gp){
+		if(turn > 18){
+			if(gp == selectedPlace){
+
+				return true;
+			}
+			if(gp.getPlayer() != 0){
+				
+				return false;
+			}else{
+				
+				return true;
+			}
+		}else{
+			if(gp.getPlayer() != 0){
+				gp.setCursor(DragSource.DefaultCopyNoDrop);
+				return false;
+			}else{
+				Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+				return true;
+			}
+		}
 	}
 }

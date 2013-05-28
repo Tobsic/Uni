@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author Veit Heller (539501)
  *
  */
-public class program {
+public class Program {
 	static ArrayList<Vector> vectors;
 	static String message;
 	
@@ -21,12 +21,6 @@ public class program {
 	public static void main(String[] args){
 		vectors = new ArrayList<Vector>();		
 		mainMenu("Hauptmenü");
-		
-
-//		Console.writeln("Die Länge des Vektors ist: {0}", new Vector(3).getInput().getLength());
-		/*Vector v = new Vector(3);
-		v.getInput();
-		System.out.Console.writeln("Die Länge des Vektors ist: " + v.getLength());*/
 	}
 	
 	/**
@@ -36,7 +30,7 @@ public class program {
 	public static void mainMenu(String Title){
 		while(true){
 			try {
-				switch(menu(Title, "Vektor erstellen", "Vektoren bearbeiten")){
+				switch(menu(Title, "Vektor erstellen", "Vektoren bearbeiten", "Hilfe")){
 				case 0:
 					return;
 				case 1:
@@ -46,6 +40,32 @@ public class program {
 					Vector choice = vectorSelectionMenu(Title + " > Bearbeiten > Auswahl von v1  (Erster Vektor der Auszuführenden Rechnung und Zielspeicherort)");
 					if(choice == null) continue;
 					vectorOperationMenu(Title + " > " + choice + " bearbeiten", choice);
+					break;
+				case 3:
+					Console.clear();
+					Console.writeln("Dies ist ein Programm für die Arbeit mit Vektoren.\n" +
+							"Die Möglichkeiten umfassen die Erstellung, Addition und Subtraktion mehrerer Vektoren,\n" +
+							"die Multiplikation und Division mit/durch eine Realzahl sowie\n" +
+							"das Bilden des Kreuzproduktes, Skalarproduktes und Spatproduktes.\n\n" +
+							"Sie können die Ergebnisse entweder in neu erstellten oder bereits bestehenden Vektoren speichern.\n\n" +
+							"Die Menüführung sieht im Überblick wie folgt aus:\n" +
+							"1: Vektor erstellen - dies erstellt einen neuen Vektor\n" +
+							"1.1:	Eingabeß\t- gibt einen neuen Vektor ein. Keine weitere Aktion\n" +
+							"1.2:	Addition\t- addiert zwei Vektoren und speichert das Ergebnis in einem neuen Vektor\n" +
+							"1.3:	Differenz\t- subtrahiert zwei Vektoren und speichert das Ergebnis in einem neuen Vektor\n" +
+							"1.4:	Multiplizieren\t- multipliziet zwei Vektoren und speichert das Ergebnis in einem neuen Vektor\n" +
+							"1.5:	Dividieren\t- dividiert zwei Vektoren und speichert das Ergebnis in einem neuen Vektor\n" +
+							"1.6:	Kreuzprodukt\t- bildet das Kreuzprodukt aus zwei Vektoren und speichert das Ergebnis in einem neuen Vektor\n" +
+							"1.7:	Einheitsvektor\t- erstellt einen neuen Einheitsvektor\n\n" +
+							"2: Vektor bearbeiten\t- hier wählen Sie einen bereits bestehenden Vektor an und bearbeiten diesen\n" +
+							"2.*.1-9: Differenz, Multiplizieren, Dividieren, Skalarprodukt (nur Ausgabe, kein Speichern), Kreuzprodukt," +
+							"Spatprodukt (nur Ausgabe, kein Speichern), In Einheitsvektor umwandeln, Länge (nur Ausgabe, kein Speichern)\n\n" +
+							"Ich hoffe, Ihre Fragen wurden beantwortet.\n" +
+							"Version 0.8.3, CCL\n" +
+							"Creators: Veit Heller (539501), Tobias Brosge (539713)\n" +
+							"\n" +
+							"Enter zum beenden");
+					Console.getString();
 					break;
 				}
 			} catch (IOException e) {
@@ -215,7 +235,7 @@ public class program {
 		int choice = Console.getInteger("Bitte wählen Sie die Nummer eines Menüpunktes");
 		while((choice < 0) || (choice > menupoints.length)){
 			drawMenupoints(menupoints);
-			choice = Console.getInteger("Die Auswahl liegt auserhalb des Menüumfanges");
+			choice = Console.getInteger("Die Auswahl liegt ausserhalb des Menüumfanges");
 		}
 		return choice;
 	}

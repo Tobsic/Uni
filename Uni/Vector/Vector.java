@@ -17,7 +17,7 @@ public class Vector{
 	private double[] _values;
 	
 	/**
-	 * Creats a new zero-vector with in the given dimension (maximum 7).
+	 * Creates a new zero-vector with in the given dimension (maximum 7).
 	 * @param Dimension Dimension of the new vector (maximum 7)
 	 * @throws DimensionException Dimension must be between 0 and 7
 	 */
@@ -118,7 +118,7 @@ public class Vector{
 	
 	/**
 	 * Divides each component by the value.
-	 * @param Value Value to dived by
+	 * @param Value Value to divide by
 	 * @return This vector
 	 */
 	public Vector Divide(double Value){
@@ -168,7 +168,7 @@ public class Vector{
 	}
 	
 	/**
-	 * Make this vector to a unit vector.
+	 * Make this vector a unit vector.
 	 * @return this vector
 	 */
 	public Vector toUnit(){
@@ -191,7 +191,7 @@ public class Vector{
 	 */
 	public Vector getInput(int Index) throws DimensionException, IOException{
 		if(Index < 0 || Index >= _values.length)
-			throw new DimensionException("Eingabe - Der Index zur Eingabe ist auserhalb der Dimenson des Vectors.");
+			throw new DimensionException("Eingabe - Der Index zur Eingabe ist ausserhalb der Dimenson des Vectors.");
 		else
 			_values[Index] = Console.getFloat("Bitte geben Sie die " + (Index + 1) + ". Komponente an");
 		return this;
