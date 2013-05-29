@@ -2,12 +2,14 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 public abstract class ReversiField extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
+	private boolean _bot;
 	private int _size, _activePlayer, _player1Own, _player2Own;
 	ReversiButton[][] _field;
 	GridLayout layout;
@@ -25,7 +27,8 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 		this.setVisible(true);
 	}
 	
-	public void init(int Size){
+	public void init(int Size, boolean Bot){
+		_bot = Bot;
 		_size = Size;
 		_activePlayer = 1;
 		_player1Own = 2;
@@ -127,6 +130,52 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 		ownRow(field, -1, -1);
 		ownRow(field, -1, 1);
 	}
+	
+	private boolean reversiBot(){
+		ArrayList<ReversiButton> lstGoodMoves = new ArrayList<ReversiButton>();
+		int maxOwn = 0,
+			end = _size - 1;
+		maxOwn = reversiBotCheck(0  , 0  , maxOwn, lstGoodMoves);
+		maxOwn = reversiBotCheck(0  , end, maxOwn, lstGoodMoves);
+		maxOwn = reversiBotCheck(end, end, maxOwn, lstGoodMoves);
+		maxOwn = reversiBotCheck(end, 0  , maxOwn, lstGoodMoves);
+		if(maxOwn > 0){
+			ownPosition(lstGoodMoves.get((int)(Math.random() * lstGoodMoves.size())));
+			return true;
+		}
+		for(int i = 1; i < end; i++){
+			maxOwn = reversiBotCheck(i  , 0  , maxOwn, lstGoodMoves);
+			maxOwn = reversiBotCheck(i  , end, maxOwn, lstGoodMoves);
+			maxOwn = reversiBotCheck(0  , i  , maxOwn, lstGoodMoves);
+			maxOwn = reversiBotCheck(end, i  , maxOwn, lstGoodMoves);
+		}
+		if(maxOwn > 0){
+			ownPosition(lstGoodMoves.get((int)(Math.random() * lstGoodMoves.size())));
+			return true;
+		}
+		for(int y = 1; y < end; y++)
+			for(int x = 1; x < end; x++)
+				maxOwn = reversiBotCheck(x, y, maxOwn, lstGoodMoves);
+		if(maxOwn > 0){
+			ownPosition(lstGoodMoves.get((int)(Math.random() * lstGoodMoves.size())));
+			return true;
+		}
+		return false;
+	}
+	
+	private int reversiBotCheck(int x, int y, int maxOwn, ArrayList<ReversiButton> lstGoodMoves){
+		if(_field[x][y].getPlayer() != 0)
+			return maxOwn;
+		int temp = checkPosition(x,y);
+		if(temp > maxOwn){
+			lstGoodMoves.clear();
+			lstGoodMoves.add(_field[x][y]);
+			return temp;
+		}
+		if(temp == maxOwn)
+			lstGoodMoves.add(_field[x][y]);
+		return maxOwn;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -137,10 +186,46 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 				ownPosition(field);
 				
 				_activePlayer = _activePlayer == 1 ? 2 : 1;
-				if (updatePossibleMoves() == 0) {
-					_activePlayer = _activePlayer == 1 ? 2 : 1;
-					if (updatePossibleMoves() == 0)
-						_activePlayer = 0;
+				if(_bot){
+					if(_activePlayer == 2)
+						if(reversiBot()){
+							_activePlayer = 1;
+							while(updatePossibleMoves() == 0){
+								_activePlayer = 2;
+								if(!reversiBot()){
+									_activePlayer = 0;
+									break;
+								}
+								_activePlayer = 1;
+							};
+						}
+						else{
+							_activePlayer = 1;
+							if(updatePossibleMoves() == 0)
+								_activePlayer = 0;
+						}
+					else
+						if(updatePossibleMoves() == 0){
+							_activePlayer = 2;
+							if(reversiBot()){
+								_activePlayer = 1;
+								while(updatePossibleMoves() == 0){
+									_activePlayer = 2;
+									if(!reversiBot()){
+										_activePlayer = 0;
+										break;
+									}
+									_activePlayer = 1;
+								};
+							}else
+								_activePlayer = 0;
+						}
+				}else{
+					if (updatePossibleMoves() == 0) {
+						_activePlayer = _activePlayer == 1 ? 2 : 1;
+						if (updatePossibleMoves() == 0)
+							_activePlayer = 0;
+					}
 				}
 				endMove(_activePlayer, _player1Own, _player2Own);
 			}

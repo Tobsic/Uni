@@ -99,7 +99,7 @@ public class ReversiPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		Object sender = arg0.getSource();
 		if(sender == reversiOptions.btnOk){
-			reversiField.init((Integer)reversiOptions.cbSize.getSelectedItem());
+			reversiField.init((Integer)reversiOptions.cbSize.getSelectedItem(), reversiOptions.cbPlayers.getSelectedIndex() == 1);
 			lblMessage.setText("Player 1's turn");
 			lblPoints.setText("2 : 2 - 50% : 50 %");
 			this.remove(reversiOptions);
@@ -118,7 +118,7 @@ public class ReversiPanel extends JPanel implements ActionListener {
 			lblMessage.setText("Player 1's turn");
 			btnOptions.setVisible(false);
 			btnRevenge.setVisible(false);
-			reversiField.init((Integer)reversiOptions.cbSize.getSelectedItem());
+			reversiField.init((Integer)reversiOptions.cbSize.getSelectedItem(), reversiOptions.cbPlayers.getSelectedIndex() == 1);
 			this.revalidate();
 			this.repaint();
 		}
