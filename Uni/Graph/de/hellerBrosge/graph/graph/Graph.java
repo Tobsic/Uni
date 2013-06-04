@@ -119,6 +119,35 @@ public class Graph<T extends Serializable> implements Serializable{
 	}
 	
 	/**
+	 * Find all path's from one node to another node
+	 * @param from The node, where the path starts
+	 * @param to The node, where the path ends
+	 * @return All available path's
+	 */
+	public ArrayList<ArrayList<Node<T>>> findPath(Node<T> from, Node<T> to){
+		ArrayList<ArrayList<Node<T>>> result = new ArrayList<ArrayList<Node<T>>>();
+		if(from == to){
+			ArrayList<Node<T>> sub = new ArrayList<Node<T>>();
+			sub.add(to);
+			result.add(sub);
+			return result;
+		}else if(from.subNodes.size() == 0)
+			return null;
+		for(Node<T> node : from.subNodes){
+			ArrayList<ArrayList<Node<T>>> res = findPath(node, to);
+			if(res != null){
+				for(ArrayList<Node<T>> sub : res){
+					sub.add(0, from);
+					result.add(sub);
+				}
+			}
+		}
+		if(result.size() == 0)
+			return null;
+		return result;
+	}
+	
+	/**
 	 * Saves the graph to a binary file
 	 * @param path Path to the file, where the graph should be stored
 	 * @throws FileNotFoundException

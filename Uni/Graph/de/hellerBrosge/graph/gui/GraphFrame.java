@@ -204,7 +204,7 @@ public class GraphFrame extends JFrame implements ActionListener, GraphListener{
 		ArrayList<JNode> connectableComp = new ArrayList<JNode>();
 		for(Node<JNode> n : connectable)
 			connectableComp.add(n.getValue());
-		JNode comp = (JNode) JOptionPane.showInputDialog(this, "Bitte wäheln Sie den zu verbindenen Knoten an", "Verbinden von " + node.getName(), JOptionPane.QUESTION_MESSAGE, null, connectableComp.toArray(), null);
+		JNode comp = (JNode) JOptionPane.showInputDialog(this, "Bitte wäheln Sie den zu verbindenen Knoten an", "Verbinden von " + node, JOptionPane.QUESTION_MESSAGE, null, connectableComp.toArray(), null);
 		if(comp != null)
 			thisNode.connectTo(comp.getNode());
 		panField.repaint();
@@ -216,7 +216,7 @@ public class GraphFrame extends JFrame implements ActionListener, GraphListener{
 		ArrayList<JNode> connected = new ArrayList<JNode>();
 		for(Node<JNode> k : subNodes)
 			connected.add(k.getValue());
-		JNode comp = (JNode) JOptionPane.showInputDialog(this, "Bitte wäheln Sie den Knoten aus, von dem Sie die zu Verbindung entfernen möchten", "Verbindung von " + node.getName() + "entfernen", JOptionPane.QUESTION_MESSAGE, null, connected.toArray(), null);
+		JNode comp = (JNode) JOptionPane.showInputDialog(this, "Bitte wäheln Sie den Knoten aus, von dem Sie die zu Verbindung entfernen möchten", "Verbindung von " + node + " entfernen", JOptionPane.QUESTION_MESSAGE, null, connected.toArray(), null);
 		if(comp != null)
 			graph.disconnect(node.getNode(), comp.getNode());
 		panField.repaint();
@@ -227,6 +227,33 @@ public class GraphFrame extends JFrame implements ActionListener, GraphListener{
 		graph.remove(node.getNode());
 		panField.remove(node);
 		panField.repaint();
+	}
+	
+	@Override
+	public void FindPath(JNode node) {
+		ArrayList<JNode> nodes = new ArrayList<JNode>();
+		int nodeCount = graph.getSize();
+		for(int i = 0; i < nodeCount; i++){
+			JNode n = graph.getNode(i).getValue();
+			if(n != node)
+				nodes.add(n);
+		}
+		JNode comp = (JNode)JOptionPane.showInputDialog(this, "Bitte wäheln Sie den Knoten aus, zu welchem alle Verbindungen von " + node + " aufgelistet werden sollen.", "Pfad von " + node + " zu einem ausgewähltem Knoten finden", JOptionPane.QUESTION_MESSAGE, null, nodes.toArray(), null);
+		if(comp != null){
+			ArrayList<ArrayList<Node<JNode>>> pathes = graph.findPath(node.getNode(), comp.getNode());
+			if(pathes == null)
+				JOptionPane.showMessageDialog(this, "Es wurde kein Pfad von " + node + " zu " + comp + " gefunden.", "Kein Pfad!", JOptionPane.INFORMATION_MESSAGE);
+			else{
+				String result = "Es wurden folgende Wege gefunden:";
+				for(ArrayList<Node<JNode>> path : pathes){
+					result += "\n" + path.get(0).getValue();
+					int length = path.size();
+					for(int i = 1; i < length; i++)
+						result += " --> " + path.get(i).getValue();
+				}
+				JOptionPane.showMessageDialog(this, result, "Pfade von " + node + " zu " + comp, JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
 	}
 	
 	@Override

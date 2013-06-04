@@ -29,7 +29,7 @@ public class JNode extends JComponent implements ActionListener, MouseListener, 
 	private Point lastPos;
 	private Node<JNode> node;
 	private JPopupMenu context;
-	private JMenuItem conRename, conConnect, conDisconnect, conDelete;
+	private JMenuItem conRename, conConnect, conDisconnect, conFindPath, conDelete;
 	private transient GraphListener listener;
 
 	/**
@@ -48,12 +48,15 @@ public class JNode extends JComponent implements ActionListener, MouseListener, 
 		conConnect.addActionListener(this);
 		conDisconnect = new JMenuItem("Trennen von ...");
 		conDisconnect.addActionListener(this);
+		conFindPath = new JMenuItem("Weg finden zu ...");
+		conFindPath.addActionListener(this);
 		conDelete = new JMenuItem("Löschen");
 		conDelete.addActionListener(this);
 		context = new JPopupMenu();
 		context.add(conRename);
 		context.add(conConnect);
 		context.add(conDisconnect);
+		context.add(conFindPath);
 		context.add(conDelete);
 		this.setName(name);
 		this.setSize(60, 60);
@@ -167,6 +170,8 @@ public class JNode extends JComponent implements ActionListener, MouseListener, 
 				listener.NodeConnect(this);
 			else if(sender == conDisconnect)
 				listener.NodeDisconnect(this);
+			else if(sender == conFindPath)
+				listener.FindPath(this);
 			else if(sender == conDelete)
 				listener.NodeDelete(this);
 	}

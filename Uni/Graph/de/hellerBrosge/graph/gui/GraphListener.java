@@ -27,4 +27,9 @@ public interface GraphListener {
 	 * @param node Node that has moved
 	 */
 	public void NodeMoved(JNode node);
+	/**
+	 * Will be performed, when a node want's a path-search
+	 * @param node Node where the path starts
+	 */
+	public void FindPath(JNode node);
 }
