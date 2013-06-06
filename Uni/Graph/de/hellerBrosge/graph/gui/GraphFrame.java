@@ -90,8 +90,13 @@ public class GraphFrame extends JFrame implements ActionListener, GraphListener{
 						double distance = nodeCenter.distance(subNodeCenter);
 						double aspectX = difference.x / distance,
 							   aspectY = difference.y / distance,
-							   rad = (node.getValue().getWidth() - 3) / 2;
-						g.fillOval(nodeCenter.x - (int)(rad * aspectX) - 8, nodeCenter.y - (int)(rad * aspectY) - 8, 16, 16);
+//							   rad = (node.getValue().getWidth() - 3) / 2,
+							   subRad = subNode.getValue().getWidth() / 2,
+							   arrowX = subNodeCenter.x + (int)(subRad * aspectX),
+							   arrowY = subNodeCenter.y + (int)(subRad * aspectY);
+//						g.fillOval(nodeCenter.x - (int)(rad * aspectX) - 8, nodeCenter.y - (int)(rad * aspectY) - 8, 16, 16);
+						g.drawLine((int)arrowX, (int)arrowY, (int)(arrowX + 10 * aspectX - 5 * aspectY), (int)(arrowY + 10 * aspectY + 5 * aspectX));
+						g.drawLine((int)arrowX, (int)arrowY, (int)(arrowX + 10 * aspectX + 5 * aspectY), (int)(arrowY + 10 * aspectY - 5 * aspectX));
 						
 					}
 				}
