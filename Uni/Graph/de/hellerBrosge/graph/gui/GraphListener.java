@@ -32,4 +32,9 @@ public interface GraphListener {
 	 * @param node Node where the path starts
 	 */
 	public void FindPath(JNode node);
+	/**
+	 * Will be performed, when a node has resized
+	 * @param node Node that has resized
+	 */
+	public void NodeResized(JNode node);
 }

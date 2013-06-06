@@ -1,6 +1,7 @@
 package de.hellerBrosge.graph.gui;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -25,7 +26,7 @@ import de.hellerBrosge.graph.graph.Node;
  */
 public class JNode extends JComponent implements ActionListener, MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = 1L;
-	private boolean draging = false;
+	private boolean draging, hoverResize, resizing;
 	private Point lastPos;
 	private Node<JNode> node;
 	private JPopupMenu context;
@@ -109,20 +110,35 @@ public class JNode extends JComponent implements ActionListener, MouseListener, 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		if(arg0.getButton() == MouseEvent.BUTTON1){
-			draging = true;
-			lastPos = arg0.getLocationOnScreen();
+			if(hoverResize)
+				resizing = true;
+			else{
+				draging = true;
+				lastPos = arg0.getLocationOnScreen();
+			}
 		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		if(draging && arg0.getButton() == MouseEvent.BUTTON1)
+		if(draging && arg0.getButton() == MouseEvent.BUTTON1){
+			resizing = false;
 			draging = false;
+		}
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		if(draging){
+		if(resizing){
+			int oldSize = this.getWidth() / 2,
+				newSize = Math.max(15, (int)arg0.getPoint().distance(new Point(this.getWidth() / 2, this.getWidth() / 2)));
+			this.setLocation(this.getX() + oldSize - newSize, this.getY() + oldSize - newSize);
+			this.setSize(newSize * 2, newSize * 2);
+			int xOffset = arg0.getX() - this.getWidth() / 2,
+				yOffset = arg0.getY() - this.getWidth() / 2;
+			this.setCursor(new Cursor(Math.abs(xOffset) > Math.abs(yOffset) ? Cursor.E_RESIZE_CURSOR : Cursor.N_RESIZE_CURSOR));
+			listener.NodeResized(this);
+		}else if(draging){
 			Point point = arg0.getLocationOnScreen();
 			Point location = this.getLocation();
 			this.setLocation(location.x + point.x - lastPos.x, location.y + point.y - lastPos.y);
@@ -132,14 +148,22 @@ public class JNode extends JComponent implements ActionListener, MouseListener, 
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent arg0) { }
+	public void mouseMoved(MouseEvent arg0) {
+		hoverResize = arg0.getPoint().distance(new Point(this.getWidth() / 2, this.getWidth() / 2)) > this.getWidth() / 2 - 8;
+		int xOffset = arg0.getX() - this.getWidth() / 2,
+			yOffset = arg0.getY() - this.getWidth() / 2;
+		this.setCursor(new Cursor(!hoverResize ? Cursor.HAND_CURSOR :
+									Math.abs(xOffset) > Math.abs(yOffset) ? Cursor.E_RESIZE_CURSOR : Cursor.N_RESIZE_CURSOR));
+	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int width = this.getWidth();
-		g.setColor(Color.BLACK);
+		g.setColor(Color.GRAY);
 		g.fillOval(2, 2, width - 4, width - 4);
+		g.setColor(Color.BLACK);
+		g.fillOval(6, 6, width - 12, width - 12);
 		g.setColor(Color.WHITE);
 		Graphics2D g2 = (Graphics2D)g;
 		g2.drawString(this.getName(), 8, 4 + width / 2);

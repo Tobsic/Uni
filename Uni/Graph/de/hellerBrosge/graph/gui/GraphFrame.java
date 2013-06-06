@@ -149,6 +149,7 @@ public class GraphFrame extends JFrame implements ActionListener, GraphListener{
 				panField.add(node);
 				node.setListener(this);
 			}
+			panField.repaint();
 		} catch (ClassNotFoundException e) {
 //			e.printStackTrace();
 		} catch (IOException e) {
@@ -263,6 +264,11 @@ public class GraphFrame extends JFrame implements ActionListener, GraphListener{
 	
 	@Override
 	public void NodeMoved(JNode node) {
+		panField.repaint();
+	}
+	
+	@Override
+	public void NodeResized(JNode node) {
 		panField.repaint();
 	}
 	
