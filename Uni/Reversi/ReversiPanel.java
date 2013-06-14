@@ -13,6 +13,13 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 
+/**
+ * A panel with the options at first and the field and states after starting
+ * 
+ * @author Tobias Brosge (539713)
+ * @author Veit Heller (539501)
+ * 
+ */
 public class ReversiPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	JLabel lblMessage, lblPoints;
@@ -24,6 +31,9 @@ public class ReversiPanel extends JPanel implements ActionListener {
 	ReversiOptionsPanel reversiOptions;
 	JButton btnOptions, btnRevenge;
 
+	/**
+	 * Initialize a new ReversiPanel and all its components
+	 */
 	ReversiPanel(){
 		super();
 		self = this;
@@ -69,7 +79,7 @@ public class ReversiPanel extends JPanel implements ActionListener {
 					lblMessage.setText("Player 2's turn");
 					break;
 				case 0:
-					lblMessage.setText(player1Own == player2Own ? "No one has lost!" : player1Own > player2Own ? "Player 1 has on!" : "Player 2 has won!");
+					lblMessage.setText(player1Own == player2Own ? "No one has lost!" : player1Own > player2Own ? "Player 1 has won!" : "Player 2 has won!");
 					self.btnOptions.setVisible(true);
 					self.btnRevenge.setVisible(true);
 				}
@@ -95,6 +105,9 @@ public class ReversiPanel extends JPanel implements ActionListener {
 		this.add(lblPoints, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Start game, show options or rematch on clicking an element
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		Object sender = arg0.getSource();
@@ -124,6 +137,9 @@ public class ReversiPanel extends JPanel implements ActionListener {
 		}
 	}
 	
+	/**
+	 * draw the background picture
+	 */
 	@Override
 	public void paint(Graphics g) {
 		float aspect = Math.max((float)this.getWidth() / bgWidth, (float)this.getHeight() / bgHeight);

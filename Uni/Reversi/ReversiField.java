@@ -6,6 +6,12 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+/**
+ * 
+ * @author Tobias Brosge (539713)
+ * @author Veit Heller (539501)
+ * 
+ */
 public abstract class ReversiField extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
@@ -14,6 +20,9 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 	ReversiButton[][] _field;
 	GridLayout layout;
 
+	/**
+	 * Initialize a new panel and set the grid layout
+	 */
 	public ReversiField() {
 		super();
 		
@@ -27,6 +36,11 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 		this.setVisible(true);
 	}
 	
+	/**
+	 * Initialize a new play field with ReversiButton's
+	 * @param Size Count of rows and columns
+	 * @param Bot Enable the bot if it is true
+	 */
 	public void init(int Size, boolean Bot){
 		_bot = Bot;
 		_size = Size;
@@ -56,35 +70,59 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 		updatePossibleMoves();
 	}
 
-	private int checkRow(int x, int y, int xspeed, int yspeed) {
+	/**
+	 * Get the numbers of ownable positions by the active player in one direction
+	 * @param Row The row where to check if the active player would set
+	 * @param Column The column where to check if the active player would set
+	 * @param RowsPerStep Number to increase/decrease the row (1, 0 or -1 makes sense)
+	 * @param ColumnsPerStep Number to increase/decrease the column (1, 0 or -1 makes sense)
+	 * @return
+	 */
+	private int checkRow(int Row, int Column, int RowsPerStep, int ColumnsPerStep) {
 		int result = -1;
 		do {
-			x += xspeed;
-			y += yspeed;
-			if (x >= _size || x < 0 || y >= _size || y < 0
-					|| _field[x][y].getPlayer() == 0)
+			Row += RowsPerStep;
+			Column += ColumnsPerStep;
+			if (Row >= _size || Row < 0 || Column >= _size || Column < 0
+					|| _field[Row][Column].getPlayer() == 0)
 				return 0;
 			result++;
-		} while (_field[x][y].getPlayer() != _activePlayer);
+		} while (_field[Row][Column].getPlayer() != _activePlayer);
 		return result;
 	}
 	
-	private int checkPosition(int x, int y){
-		return checkRow(x, y, 1, 0) +
-			   checkRow(x, y,-1, 0) +
-			   checkRow(x, y, 0, 1) +
-			   checkRow(x, y, 0,-1) +
-			   checkRow(x, y, 1, 1) +
-			   checkRow(x, y, 1,-1) +
-			   checkRow(x, y,-1,-1) +
-			   checkRow(x, y,-1, 1);
+	/**
+	 * Get the numbers of ownable positions by the active player in all directions
+	 * @param Row The row where to check if the active player would set
+	 * @param Column The column where to check if the active player would set
+	 * @return
+	 */
+	private int checkPosition(int Row, int Column){
+		return checkRow(Row, Column, 1, 0) +
+			   checkRow(Row, Column,-1, 0) +
+			   checkRow(Row, Column, 0, 1) +
+			   checkRow(Row, Column, 0,-1) +
+			   checkRow(Row, Column, 1, 1) +
+			   checkRow(Row, Column, 1,-1) +
+			   checkRow(Row, Column,-1,-1) +
+			   checkRow(Row, Column,-1, 1);
 	}
 
-	private boolean CanSet(int x, int y) {
-		return _field[x][y].getPlayer() == 0 &&
-				checkPosition(x, y) > 0;
+	/**
+	 * Check if the active player can set on a specific position
+	 * @param Row Row where to check if the active player can set
+	 * @param Column Column where to check if the active player can set
+	 * @return
+	 */
+	private boolean CanSet(int Row, int Column) {
+		return _field[Row][Column].getPlayer() == 0 &&
+				checkPosition(Row, Column) > 0;
 	}
 
+	/**
+	 * Activate the setable fields
+	 * @return The numbers of possible moves
+	 */
 	private int updatePossibleMoves() {
 		int result = 0;
 		for (int y = 0; y < _size; y++)
@@ -97,13 +135,19 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 		return result;
 	}
 
-	private void ownRow(ReversiButton field, int xspeed, int yspeed) {
+	/**
+	 * Active player adopt all positions in one direction
+	 * @param field Start position
+	 * @param RowsPerStep Numbers to increase/decrease the row (1, 0 or -1 makes sense)
+	 * @param ColumnsPerStep Numbers to increase/decrease the cloumn (1, 0 or -1 makes sense)
+	 */
+	private void ownRow(ReversiButton field, int RowsPerStep, int ColumnsPerStep) {
 		int x = field.getRow(),
 			y = field.getColumn();
-		int temp = checkRow(x, y, xspeed, yspeed);
+		int temp = checkRow(x, y, RowsPerStep, ColumnsPerStep);
 		if (temp > 0) {
 			for (int i = 0; i <= temp; i++)
-				_field[x + i * xspeed][y + i * yspeed].setPlayer(_activePlayer);
+				_field[x + i * RowsPerStep][y + i * ColumnsPerStep].setPlayer(_activePlayer);
 			if (_activePlayer == 1){
 				_player1Own += temp;
 				_player2Own -= temp;
@@ -115,6 +159,10 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Active player own all possible positions around the given position
+	 * @param field The position, where the active player had set
+	 */
 	private void ownPosition(ReversiButton field){
 		field.setPlayer(_activePlayer);
 		if (_activePlayer == 1)
@@ -131,6 +179,10 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 		ownRow(field, -1, 1);
 	}
 	
+	/**
+	 * Do the best move (not best at all, but a good)
+	 * @return True if the bot had set, false if there is no ownable position
+	 */
 	private boolean reversiBot(){
 		ArrayList<ReversiButton> lstGoodMoves = new ArrayList<ReversiButton>();
 		int maxOwn = 0,
@@ -163,20 +215,36 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 		return false;
 	}
 	
-	private int reversiBotCheck(int x, int y, int maxOwn, ArrayList<ReversiButton> lstGoodMoves){
-		if(_field[x][y].getPlayer() != 0)
+	/**
+	 * Add a position to a list of positions, when the move positions that will own equals the most ownable positions till now.
+	 * Clear the list and add this position, if the this move could own more positions than the last highest amount.
+	 * Do nothing if this move own less than the last highest ownable positions.
+	 * @param Row The row where to check if the bot set
+	 * @param Column The column where to check if the bot set
+	 * @param maxOwn The highest amount of ownable positions till now
+	 * @param lstGoodMoves List of positions that could own to get the last highest ownable positions
+	 * @return Amount of the positions that ownd by one of the positions out of the given list
+	 */
+	private int reversiBotCheck(int Row, int Column, int maxOwn, ArrayList<ReversiButton> lstGoodMoves){
+		if(_field[Row][Column].getPlayer() != 0)
 			return maxOwn;
-		int temp = checkPosition(x,y);
+		int temp = checkPosition(Row,Column);
 		if(temp > maxOwn){
 			lstGoodMoves.clear();
-			lstGoodMoves.add(_field[x][y]);
+			lstGoodMoves.add(_field[Row][Column]);
 			return temp;
 		}
 		if(temp == maxOwn)
-			lstGoodMoves.add(_field[x][y]);
+			lstGoodMoves.add(_field[Row][Column]);
 		return maxOwn;
 	}
 
+	/**
+	 * Own a position if the player click on it
+	 * if there is a second player, set him to the active player and wait for an action
+	 * If there is a bot, let him make a move
+	 * Perform endMove to update the states and end the game when nobody can set
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object sender = e.getSource();
@@ -232,5 +300,11 @@ public abstract class ReversiField extends JPanel implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Performed if a move ends. Should be overridden to show states
+	 * @param player The active player, 0 if the game is over
+	 * @param player1Own numbers of positions that player 1 own
+	 * @param player2Own numbers of positions that player 2 own
+	 */
 	abstract void endMove(int player, int player1Own, int player2Own);
 }

@@ -10,6 +10,13 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 
+/**
+ * An panel with options for the game and a play button
+ * 
+ * @author Tobias Brosge (539713)
+ * @author Veit Heller (539501)
+ * 
+ */
 public class ReversiOptionsPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	JPanel panSize, panPlayers;
@@ -18,6 +25,10 @@ public class ReversiOptionsPanel extends JPanel {
 	JComboBox<String> cbPlayers;
 	JButton btnOk;
 	
+	/**
+	 * Initialize a new OptionsPanel and all its component
+	 * @param listener The ActionListener where the events actions will be performed
+	 */
 	public ReversiOptionsPanel(ActionListener listener){
 		super();
 		
