@@ -1,4 +1,4 @@
-package de.hellerBrosge.graph.gui;
+package de.hellerbrosge.graph.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -16,8 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import de.hellerBrosge.graph.graph.Graph;
-import de.hellerBrosge.graph.graph.Node;
+import de.hellerbrosge.graph.graph.Graph;
+import de.hellerbrosge.graph.graph.Node;
 
 enum Tool{
 	add, connect, select

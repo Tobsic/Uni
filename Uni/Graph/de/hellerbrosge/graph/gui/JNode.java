@@ -1,4 +1,4 @@
-package de.hellerBrosge.graph.gui;
+package de.hellerbrosge.graph.gui;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -16,7 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import de.hellerBrosge.graph.graph.Node;
+import de.hellerbrosge.graph.graph.Node;
 
 /**
  * 

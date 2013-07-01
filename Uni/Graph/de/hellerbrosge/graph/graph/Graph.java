@@ -1,4 +1,4 @@
-package de.hellerBrosge.graph.graph;
+package de.hellerbrosge.graph.graph;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import de.hellerBrosge.graph.gui.GraphException;
+import de.hellerbrosge.graph.gui.GraphException;
 
 /**
  * 
@@ -131,9 +131,9 @@ public class Graph<T extends Serializable> implements Serializable{
 			sub.add(to);
 			result.add(sub);
 			return result;
-		}else if(from.subNodes.size() == 0)
+		}else if(from.getConnectedNodes().size() == 0)
 			return null;
-		for(Node<T> node : from.subNodes){
+		for(Node<T> node : from.getConnectedNodes()){
 			ArrayList<ArrayList<Node<T>>> res = findPath(node, to);
 			if(res != null){
 				for(ArrayList<Node<T>> sub : res){
@@ -154,15 +154,17 @@ public class Graph<T extends Serializable> implements Serializable{
 	 * @throws IOException
 	 */
 	public void save(String path) throws FileNotFoundException, IOException{
+		   FileOutputStream fo = null;
 		   ObjectOutputStream o = null;
 		   try{
-			   o = new ObjectOutputStream(new FileOutputStream(path));
+			   fo = new FileOutputStream(path);
+			   o = new ObjectOutputStream(fo);
 			   o.writeObject(this);
-			   o.close();
-		   } catch(IOException e){
-			   if(o != null)
-				   o.close();
+		   } catch(IOException e){;
 			   throw e;
+		   }finally{
+			   if(fo != null) fo.close();
+			   if(o != null) o.close();
 		   }
 	}
 	

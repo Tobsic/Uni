@@ -1,4 +1,4 @@
-package de.hellerBrosge.graph.graph;
+package de.hellerbrosge.graph.graph;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 public class Node<T extends Serializable> implements Serializable{
 	private static final long serialVersionUID = 1L;
-	T value;
-	ArrayList<Node<T>> subNodes;
+	private T value;
+	private ArrayList<Node<T>> subNodes;
 	
 	/**
 	 * Create a new Node with the given value
