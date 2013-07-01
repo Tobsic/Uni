@@ -1,4 +1,4 @@
-package de.hellerbrosge.graph.gui;
+package de.hellerbrosge.graph.graph;
 
 /**
  * 
